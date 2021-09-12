@@ -2,13 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link th:href="@{/css/style.css}" rel="stylesheet" />
+<link th:href="@{/css/paste.css}" rel="stylesheet" />
 <title>Test</title>
 </head>
-<body>	
+<body>
+	<div class="title">
+		<h2>Retail account application</h2>
+	</div>
+	<div class="selectPathButtonContainer">
+		<div class="selectPathButtonDiv">
+			<a th:href="@{/main}" class="selectPath">
+				<div>
+					<p th:text="#{selectPath.new.title}" class="selectPathButtonTitle"></p>
+					<p th:text="#{selectPath.new.text}"></p>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="selectPathButtonContainer">
+		<div class="selectPathButtonDiv">
+			<a th:href="@{/main}" class="selectPath"><div>
+					<p th:text="#{selectPath.existing.title}" class="selectPathButtonTitle"></p>
+					<p th:text="#{selectPath.existing.text}"></p>
+				</div></a>
+		</div>
+	</div>
+	<div class="selectPathButtonContainer">
+		<div class="selectPathButtonDiv">
+			<a th:href="@{/main/login}" class="selectPath">
 			<div>
-			<h2>Retail account application</h2>
-			<a th:href="@{/main/login}">Login</a>
+			<img th:src="@{/images/bankIDlogo.png}" width="180px" height="29px" alt="BankID logo" />	
+					<!--  <p th:text="#{selectPath.bankID.title}"></p>-->
+					<p th:text="#{selectPath.bankID.text}"></p>
+				</div></a>
+				
 		</div>
 		
+	</div>
+
 </body>
 </html>
