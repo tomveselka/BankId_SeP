@@ -21,14 +21,20 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.oauth2.sdk.token.AccessToken;
 import com.nimbusds.openid.connect.sdk.AuthenticationRequest;
 import com.nimbusds.openid.connect.sdk.op.OIDCProviderMetadata;
+import com.tomveselka.sep.imported.model.Profile;
 import com.tomveselka.sep.services.BuildLoginURIService;
 import com.tomveselka.sep.services.ExchangeTokenService;
 import com.tomveselka.sep.services.GetConfigurationService;
 import com.tomveselka.sep.services.ProfileInfoService;
+
+
 
 
 
@@ -70,7 +76,6 @@ public class MainController {
     	logger.info("Returned code="+code);
     	AccessToken accessToken = exchnageTokenService.getIdToken(code);
     	String responseClientData = profileInfoService.getProfileInfo(accessToken);
-    	//session.setAttribute("responseData", responseClientData);
     	redirectAttributes.addFlashAttribute("responseClientData", responseClientData);
     	return "redirect:/main/display";
     }
@@ -81,6 +86,7 @@ public class MainController {
         if (inputFlashMap != null) {
             String responseClientData = (String) inputFlashMap.get("responseClientData");
             System.out.println("Passed data:"+responseClientData);
+            
             return "output";
         }else {
         	return "output";
