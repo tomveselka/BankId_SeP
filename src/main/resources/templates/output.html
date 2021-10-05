@@ -2,12 +2,65 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Test</title>
+<link th:href="@{/css/style.css}" rel="stylesheet" />
+<title>Successfully obtained data from bankID</title>
 </head>
 <body>
-	<div>
-		<p>Success</p>
+	<form id="output" action="output.html" th:action="@{/main/display}"
+		method="post" th:object="${clientData}">
+		<div class="title">
+		<h2>Retail account application</h2>
 	</div>
-		
+		<div class=formContainer>
+			<div class="parameterContainer">
+				<div class="labelContainer">
+					<p th:text="#{output.label.firstName}"></p>
+				</div>
+				<div class="inputContainer">
+					<input type="text" th:field="*{givenName}"
+						autofocus="autofocus" maxlength="18" id="givenName" class="inputStandard nonEditable" readonly="readonly"/>
+				</div>
+			</div>
+			<div class="parameterContainer">
+				<div class="labelContainer">
+					<p th:text="#{output.label.surname}"></p>
+				</div>
+				<div class="inputContainer">
+					<input type="text" th:field="*{familyName}"
+						autofocus="autofocus" maxlength="18" id="familyName" class="inputStandard nonEditable" readonly="readonly"/>
+				</div>
+			</div>
+			<div class="parameterContainer">
+				<div class="labelContainer">
+					<p th:text="#{output.label.birthNumber}"></p>
+				</div>
+				<div class="inputContainer">
+					<input type="text" th:field="*{birthnumber}"
+						autofocus="autofocus" maxlength="18" id="birthnumber" class="inputStandard nonEditable" readonly="readonly"/>
+				</div>
+			</div>
+			<div class="parameterContainer">
+				<div class="labelContainer">
+					<p th:text="#{output.label.phone}"></p>
+				</div>
+				<div class="inputContainer">
+					<input type="text" th:field="*{phoneNumber}"
+						autofocus="autofocus" maxlength="18" id="phoneNumber" class="inputStandard"/>
+				</div>
+			</div>
+			<div class="parameterContainer">
+				<div class="labelContainer">
+					<p th:text="#{output.label.email}"></p>
+				</div>
+				<div class="inputContainer">
+					<input type="text" th:field="*{email}"
+						autofocus="autofocus" maxlength="18" id="email" class="inputStandard"/>
+				</div>
+			</div>
+			<div class="buttonContainer">
+			<a th:href="@{/main/logout}" class="backButton">Back</a>
+			</div>
+		</div>
+	</form>
 </body>
 </html>

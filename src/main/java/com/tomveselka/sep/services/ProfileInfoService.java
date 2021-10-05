@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.oauth2.sdk.ParseException;
@@ -15,6 +16,7 @@ import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import com.nimbusds.oauth2.sdk.token.AccessToken;
 import com.nimbusds.oauth2.sdk.token.BearerAccessToken;
 import com.nimbusds.openid.connect.sdk.UserInfoRequest;
+import com.tomveselka.sep.imported.model.Profile;
 
 @Service
 public class ProfileInfoService {
@@ -35,16 +37,18 @@ public class ProfileInfoService {
 			// And call the API
 			HTTPResponse dataResponse = new UserInfoRequest(userInfoEndpoint, token).toHTTPRequest().send();
 
-			// Data in JSON format
 			String data = dataResponse.getContentAsJSONObject().toJSONString();
 			logger.info("Successfully obtained client data: "+data);
 			return data;
 		} catch (URISyntaxException e) {
 			logger.info("Getting ProfileInfo failed with Exception " + e.toString());
+			e.printStackTrace();
 		} catch (ParseException e) {
 			logger.info("Getting ProfileInfo failed with Exception " + e.toString());
+			e.printStackTrace();
 		} catch (IOException e) {
 			logger.info("Getting ProfileInfo failed with Exception " + e.toString());
+			e.printStackTrace();
 		}
 		return null;
 	}

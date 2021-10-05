@@ -2,6 +2,8 @@ package com.tomveselka.sep.services;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import com.nimbusds.oauth2.sdk.id.State;
 import com.nimbusds.openid.connect.sdk.AuthenticationRequest;
 import com.nimbusds.openid.connect.sdk.Nonce;
 import com.nimbusds.openid.connect.sdk.Prompt;
+import com.nimbusds.openid.connect.sdk.claims.ACR;
 
 @Service
 public class BuildLoginURIService {
@@ -22,7 +25,7 @@ public class BuildLoginURIService {
 	
 	public AuthenticationRequest buildLoginUri(URI authorizationEndpoint) {
 		// Application configuration from BankID dev. portal
-	    String[] scopes = {"openid", "profile.name","profile.verification", "profile.name", "profile.email","profile.birthnumber","profile.addresses","profile.birthplaceNationality","profile.idcards","profile.phonenumber","profile.maritalstatus",};
+	    String[] scopes = {"openid", "profile.name","profile.verification", "profile.name", "profile.email","profile.birthnumber","profile.addresses","profile.birthplaceNationality","profile.idcards","profile.phonenumber","profile.maritalstatus","profile.gender","profile.paymentAccounts"};
 	    ClientID clientId = new ClientID("9e701408-88a2-4e2a-b052-2e1387583e40");
 	    String redirectURI = "http://localhost:8080/sep/main/redirectURI";
 
@@ -50,6 +53,11 @@ public class BuildLoginURIService {
 	        
 	        // Set prompt=consent
 	        authBuilder.prompt(new Prompt("consent"));
+	        
+	        //Set LoA so that 2FA is required
+	        List<ACR> acrValueList = new ArrayList<ACR>();
+	        acrValueList.add(new ACR("loa3"));
+	        authBuilder.acrValues(acrValueList);
 
 	        // ... and build the auth login URI
 	        AuthenticationRequest request = authBuilder.build();
