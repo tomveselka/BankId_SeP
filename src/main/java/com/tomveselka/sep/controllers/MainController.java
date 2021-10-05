@@ -29,6 +29,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.JWT;
+import com.nimbusds.oauth2.sdk.AccessTokenResponse;
 import com.nimbusds.oauth2.sdk.token.AccessToken;
 import com.nimbusds.openid.connect.sdk.AuthenticationRequest;
 import com.nimbusds.openid.connect.sdk.op.OIDCProviderMetadata;
@@ -36,6 +37,8 @@ import com.tomveselka.sep.imported.model.Profile;
 import com.tomveselka.sep.services.BuildLoginURIService;
 import com.tomveselka.sep.services.ExchangeTokenService;
 import com.tomveselka.sep.services.GetConfigurationService;
+import com.tomveselka.sep.services.GetTokensFromResponse;
+import com.tomveselka.sep.services.LogoutService;
 import com.tomveselka.sep.services.ParseJsonService;
 import com.tomveselka.sep.services.ProfileInfoService;
 
@@ -44,7 +47,7 @@ import com.tomveselka.sep.services.ProfileInfoService;
 
 
 @Controller
-//@SessionAttributes("responseData")
+@SessionAttributes("id_token")
 public class MainController {
 	
 	@Autowired
@@ -61,6 +64,12 @@ public class MainController {
 	
 	@Autowired
 	ParseJsonService parseJsonService;
+	
+	@Autowired
+	GetTokensFromResponse getTokensService;
+	
+	@Autowired
+	LogoutService logoutService;
 	
 	Logger logger = LoggerFactory.getLogger(MainController.class);
 	
@@ -80,9 +89,13 @@ public class MainController {
 	}   
 	
     @GetMapping(path = "/main/redirectURI")
-    public String redirectURI(@RequestParam String code, RedirectAttributes redirectAttributes) {
+    public String redirectURI(@RequestParam String code, RedirectAttributes redirectAttributes, HttpSession session) {
     	logger.info("Returned code="+code);
-    	AccessToken accessToken = exchnageTokenService.getIdToken(code);
+    	AccessTokenResponse response=exchnageTokenService.getIdToken(code);
+    	AccessToken accessToken = getTokensService.getAccessToken(response);
+    	JWT idToken=getTokensService.getJWTIdToken(response);
+    	session.setAttribute("id_token", idToken);
+    	//AccessToken accessToken = exchnageTokenService.getIdToken(code);
     	String responseClientData = profileInfoService.getProfileInfo(accessToken);
     	redirectAttributes.addFlashAttribute("responseClientData", responseClientData);
     	return "redirect:/main/display";
@@ -120,5 +133,12 @@ public class MainController {
 		}
 		model.addAttribute("clientData", profile);
     	return "output";
+    }
+    
+    @GetMapping(path="main/logout")
+    public String logout(HttpSession session){
+    	JWT idToken=(JWT) session.getAttribute("id_token");
+    	logoutService.logoutClient(idToken);
+    	return "redirect:/main"; 
     }
 }

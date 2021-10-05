@@ -30,7 +30,7 @@ public class ExchangeTokenService {
 
 	Logger logger = LoggerFactory.getLogger(ExchangeTokenService.class);
 
-	public AccessToken getIdToken(String code) {
+	public AccessTokenResponse getIdToken(String code) {
 		// Application configuration from BankID dev. portal
 		ClientID clientId = new ClientID("9e701408-88a2-4e2a-b052-2e1387583e40");
 
@@ -69,17 +69,17 @@ public class ExchangeTokenService {
 
 				// Get success response
 				AccessTokenResponse successResponse = tokenResponse.toSuccessResponse();
-
+				
 				// Obtaining an access_token
-				AccessToken accessToken = successResponse.getTokens().getAccessToken();
-				logger.info("Access token obtained succesfully value="+accessToken.getValue());
+				//AccessToken accessToken = successResponse.getTokens().getAccessToken();
+				//logger.info("Access token obtained succesfully value="+accessToken.getValue());
 				// and also obtaining an refresh_token (if can)
 				// RefreshToken refreshToken = successResponse.getTokens().getRefreshToken();
 
 				// and and finally obtaining an id_token
 				JWT idToken = successResponse.getTokens().toOIDCTokens().getIDToken();
 				logger.info("ID token obtained succesfully value=" + idToken.getParsedString());
-				return accessToken;
+				return successResponse;
 			} else {
 				TokenErrorResponse errorResponse = tokenResponse.toErrorResponse();
 				logger.info("Token response not succesfull. Error code=" + errorResponse.getErrorObject().getCode()
