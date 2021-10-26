@@ -11,17 +11,28 @@ Uses Java Spring with Thymeleaf for basic web pages mockup and Spring Security f
 ### First page
 /sep/main - start of the flow, offers option to use BankIDas a new client
 
+![](/ReadMeImages/start%20page.png)
+
 ### BankID authentication
 
 - After clicking on the BankID option, authentication request is built and client is redirected to BankID list of banks
-- After selecting mock bank, he logs in with it
+
+![](/ReadMeImages/bank%20selection.png)
+
+- After selecting mock bank, he logs in into this IdP
+
+![](/ReadMeImages/login%20page.png)
+
 - Confirm that he agrees with passing all the data
+
+![](/ReadMeImages/consent.png)
+
 
 ### Application form
 
 At this point we receive token which we use to request client data (using **/profile** with full AML compliant scope), which we then display
 
-
+![](/ReadMeImages/result.png)
 
 ## Full output example
 
