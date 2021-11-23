@@ -63,6 +63,7 @@ public class ExchangeTokenService {
 			TokenRequest request = new TokenRequest(tokenEndpointURI, clientAuth, codeGrant);
 
 			// Get the token response
+			logger.info("Calling /token (tokenEndpoint) to exchange Code for token");
 			TokenResponse tokenResponse = OIDCTokenResponseParser.parse(request.toHTTPRequest().send());
 
 			if (tokenResponse.indicatesSuccess()) {
@@ -77,8 +78,8 @@ public class ExchangeTokenService {
 				// RefreshToken refreshToken = successResponse.getTokens().getRefreshToken();
 
 				// and and finally obtaining an id_token
-				JWT idToken = successResponse.getTokens().toOIDCTokens().getIDToken();
-				logger.info("ID token obtained succesfully value=" + idToken.getParsedString());
+				logger.info("Tokens obtained successfully, success response: "+successResponse.toString());
+				
 				return successResponse;
 			} else {
 				TokenErrorResponse errorResponse = tokenResponse.toErrorResponse();

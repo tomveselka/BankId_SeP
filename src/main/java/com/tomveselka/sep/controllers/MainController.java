@@ -82,15 +82,17 @@ public class MainController {
 		
 	@GetMapping(path="main/login")
 	public String getEndpoint() {
+		logger.info("Clicked Login via bankID");
 		OIDCProviderMetadata metadata=configurationService.getAuthorizationEndpoint();
 		AuthenticationRequest request = loginURIService.buildLoginUri(metadata.getAuthorizationEndpointURI());
+		logger.info("Redirecting to AuthorizationEndpoint");
 		return "redirect:"+request.toURI();
 
 	}   
 	
     @GetMapping(path = "/main/redirectURI")
     public String redirectURI(@RequestParam String code, RedirectAttributes redirectAttributes, HttpSession session) {
-    	logger.info("Returned code="+code);
+    	logger.info("Redirected back from bankID with code="+code);
     	AccessTokenResponse response=exchnageTokenService.getIdToken(code);
     	AccessToken accessToken = getTokensService.getAccessToken(response);
     	JWT idToken=getTokensService.getJWTIdToken(response);

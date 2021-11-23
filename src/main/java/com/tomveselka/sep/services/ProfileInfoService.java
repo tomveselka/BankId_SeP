@@ -35,10 +35,11 @@ public class ProfileInfoService {
 			logger.info("BearerAccessToken token="+token.toString());
 			
 			// And call the API
+			logger.info("Calling UserInfo endpoint to get client data");
 			HTTPResponse dataResponse = new UserInfoRequest(userInfoEndpoint, token).toHTTPRequest().send();
 
 			String data = dataResponse.getContentAsJSONObject().toJSONString();
-			logger.info("Successfully obtained client data: "+data);
+			logger.info("Successfully obtained client data from UserInfo endpoint, data: "+data);
 			return data;
 		} catch (URISyntaxException e) {
 			logger.info("Getting ProfileInfo failed with Exception " + e.toString());
